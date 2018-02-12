@@ -19,13 +19,13 @@ bool load_content() {
   vector<vec3> positions{vec3(0.0f, 1.0f, 0.0f), vec3(-1.0f, -1.0f, 0.0f), vec3(1.0f, -1.0f, 0.0f)};
   // *********************************
   // Define texture coordinates for triangle
-
+  
   // *********************************
   // Add to the geometry
-  geom.add_buffer(positions, BUFFER_INDEXES::POSITION_BUFFER);
+  geom.add_buffer(tex_coords, BUFFER_INDEXES::POSITION_BUFFER);
   // *********************************
   // Add texture coordinate buffer to geometry
-
+  geom.add_buffer(positions, BUFFER_INDEXES::TEXTURE_COORDS_0);
   // *********************************
 
   // Create mesh object
