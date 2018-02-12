@@ -1,4 +1,4 @@
-#include <glm\glm.hpp>
+﻿#include <glm\glm.hpp>
 #include <graphics_framework.h>
 
 using namespace std;
@@ -28,15 +28,15 @@ void create_sierpinski(geometry &geom) {
   for (auto i = 1; i < num_points; ++i) {
     // *********************************
     // Add random point
-
+	
     // Add colour - all points red
 
     // *********************************
   }
   // *********************************
   // Add buffers to geometry
-
-
+  geom.add_buffer(points, BUFFER_INDEXES::POSITION_BUFFER);
+  geom.add_buffer(colours, BUFFER_INDEXES::POSITION_BUFFER);
   // *********************************
 }
 
