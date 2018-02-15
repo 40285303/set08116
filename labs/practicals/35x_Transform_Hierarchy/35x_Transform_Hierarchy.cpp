@@ -18,15 +18,15 @@ bool load_content() {
 
   // *********************************
   // Create Three Identical Box Meshes
-
-
-
+  meshes[0] = mesh(geometry_builder::create_box());
+  meshes[1] = mesh(geometry_builder::create_box());
+  meshes[2] = mesh(geometry_builder::create_box());
   // Move Box One to (0,1,0)
-
+  meshes[0].get_transform().position = vec3(0.0f, 1.0, 0.0f);
   // Move Box Two to (0,0,1)
-
+  meshes[1].get_transform().position = vec3(0.0f, 0.0f, 1.0f);
   // Move Box Three to (0,1,0)
-
+  meshes[2].get_transform().position = vec3(0.0f, 1.0f, 0.0f);
   // *********************************
 
   // Load texture

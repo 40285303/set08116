@@ -14,6 +14,6 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Sample colour from 1D texture
-  tex = texture(colour_data, get_screen_width, get_screen_height, false, false);
+  tex = texture(tex, tex_coord);
   // *********************************
 }

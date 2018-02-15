@@ -16,7 +16,7 @@ bool load_content() {
 
   // *********************************
   // box
-  geometry geom = geometry_builder::create_box();
+  meshes["box"] = mesh(geometry_builder::create_box());
 
   // Tetrahedron
   meshes["tetrahedron"] = mesh(geometry_builder::create_tetrahedron());
@@ -39,27 +39,33 @@ bool load_content() {
 
   // Set the transforms for your meshes here
   // 5x scale, move(-10.0f, 2.5f, -30.0f)
-
+  meshes["box"].get_transform().scale *= vec3(5.0);
+  meshes["box"].get_transform().position = vec3(-10.0, 2.5f, -30.0f);
 
   // 4x scale, move(-30.0f, 10.0f, -10.0f)
-
+  meshes["tetrahedron"].get_transform().scale *= vec3(4.0);
+  meshes["tetrahedron"].get_transform().position = vec3(-30.0f, 10.0f, -10.0f);
 
   // 5x scale, move(-10.0f, 7.5f, -30.0f)
-
+  meshes["pyramid"].get_transform().scale *= vec3(5.0);
+  meshes["pyramid"].get_transform().position = vec3(-10.0f, 7.5f, -30.0f);
 
   // scale(3.0f, 1.0f, 3.0f), move(-10.0f, 11.5f, -30.0f), 180 rotate X axis
-
-
+  meshes["disk"].get_transform().scale *= vec3(3.0f, 1.0f, 3.0f);
+  meshes["disk"].get_transform().position = vec3(-10.0f, 11.5f, -30.0f);
+  meshes["disk"].get_transform().rotate(vec3(pi<float>()/2, 0.0f, 0.0f));
 
   // 5x scale, move(-25.0f, 2.5f, -25.0f)
-
+  meshes["cylinder"].get_transform().scale *= vec3(5);
+  meshes["cylinder"].get_transform().position = vec3(-25.0f, 2.5f, -25.0f);
 
   // 2.5x scale, move(-25.0f, 10.0f, -25.0f)
-
+  meshes["sphere"].get_transform().scale *= vec3(2.5);
+  meshes["sphere"].get_transform().position = vec3(-25.0f, 10.0f, -25.0f);
 
   // 180 rotate X axis, move(-25.0f, 10.0f, -25.0f)
-
-
+  meshes["torus"].get_transform().rotate(vec3(pi<float>()/2, 0.0f, 0.0f));
+  meshes["torus"].get_transform().position = vec3(-25.0f, 10.0f, -25.0f);
   // *********************************
 
   // Load texture
