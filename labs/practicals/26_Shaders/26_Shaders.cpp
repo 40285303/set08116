@@ -46,23 +46,23 @@ bool update(float delta_time) {
 }
 
 bool render() {
-  // Bind effect
-  renderer::bind(eff);
-  // Create MVP matrix
-  auto M = m.get_transform().get_transform_matrix();
-  auto V = cam.get_view();
-  auto P = cam.get_projection();
-  auto MVP = P * V * M;
-  // Set MVP matrix uniform
-  glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
-                     1,                               // Number of values - 1 mat4
-                     GL_FALSE,                        // Transpose the matrix?
-                     value_ptr(MVP));                 // Pointer to matrix data
-  // *********************************
-  // Set the colour value for the shader here (Hint: rep the Brand, use the NapierRed macro)
-  glUniform4fv(eff.get_uniform_location("colour"),
-	  1,
-	  value_ptr(vec4(NapierRed, 1.0f)));
+	// Bind effect
+	renderer::bind(eff);
+	// Create MVP matrix
+	auto M = m.get_transform().get_transform_matrix();
+	auto V = cam.get_view();
+	auto P = cam.get_projection();
+	auto MVP = P * V * M;
+	// Set MVP matrix uniform
+	glUniformMatrix4fv(eff.get_uniform_location("MVP"), // Location of uniform
+		1,                               // Number of values - 1 mat4
+		GL_FALSE,                        // Transpose the matrix?
+		value_ptr(MVP));                 // Pointer to matrix data
+										// *********************************
+										// Set the colour value for the shader here (Hint: rep the Brand, use the NapierRed macro)
+	glUniform4fv(eff.get_uniform_location("colour"),
+		1,
+		value_ptr(vec4(NapierRed, 1.0f)));
   // *********************************
 
   // Render the mesh

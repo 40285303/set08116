@@ -27,10 +27,10 @@ bool load_content() {
 
   // Create  mesh objects - reuse geometry
   for (unsigned int i = 0; i < meshes.size(); ++i) {
-    meshes[i] = mesh(geom);
-    meshes[i].get_transform().scale = vec3(10.0f, 400.0f, 10.0f);
-    meshes[i].get_transform().rotate(vec3(-half_pi<float>(), 0.0f, 0.0f));
-    meshes[i].get_transform().translate((static_cast<float>(i) * vec3(21.0f, 0.0f, 0.0f)) - vec3(21.0f, 0.0f, 0));
+	  meshes[i] = mesh(geom);
+	  meshes[i].get_transform().scale = vec3(10.0f, 400.0f, 10.0f);
+	  meshes[i].get_transform().rotate(vec3(-half_pi<float>(), 0.0f, 0.0f));
+	  meshes[i].get_transform().translate((static_cast<float>(i) * vec3(21.0f, 0.0f, 0.0f)) - vec3(21.0f, 0.0f, 0));
   }
 
   // Load in texture shaders, !Note that are pulling in shader file from previous project!

@@ -16,18 +16,25 @@ bool load_content() {
 
   // *********************************
   // box
+  geometry geom = geometry_builder::create_box();
 
   // Tetrahedron
+  meshes["tetrahedron"] = mesh(geometry_builder::create_tetrahedron());
 
   // Pyramid
+  meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
 
   // Disk
+  meshes["disk"] = mesh(geometry_builder::create_disk());
 
   // Cylinder
+  meshes["cylinder"] = mesh(geometry_builder::create_cylinder());
 
   // Sphere
+  meshes["sphere"] = mesh(geometry_builder::create_sphere());
 
   // Torus
+  meshes["torus"] = mesh(geometry_builder::create_torus());
 
 
   // Set the transforms for your meshes here
@@ -94,9 +101,9 @@ bool render() {
 
     // *********************************
     // Bind texture to renderer
-
+	renderer::bind(tex, 0);
     // Set the texture value for the shader here
-
+	glUniform1i(eff.get_uniform_location("tex"), 0);
     // *********************************
     // Render mesh
     renderer::render(m);
