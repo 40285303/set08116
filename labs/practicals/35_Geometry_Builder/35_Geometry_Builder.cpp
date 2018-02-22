@@ -25,29 +25,29 @@ bool load_content() {
   meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
 
   // Disk
-  meshes["disk"] = mesh(geometry_builder::create_disk());
+  meshes["disk"] = mesh(geometry_builder::create_disk(20));
 
   // Cylinder
-  meshes["cylinder"] = mesh(geometry_builder::create_cylinder());
+  meshes["cylinder"] = mesh(geometry_builder::create_cylinder(unsigned int(20), unsigned int(20)));
 
   // Sphere
-  meshes["sphere"] = mesh(geometry_builder::create_sphere());
+  meshes["sphere"] = mesh(geometry_builder::create_sphere(unsigned int(20), unsigned int(20)));
 
   // Torus
-  meshes["torus"] = mesh(geometry_builder::create_torus());
+  meshes["torus"] = mesh(geometry_builder::create_torus(unsigned int(20), unsigned int(20), float(1), float(5)));
 
 
   // Set the transforms for your meshes here
   // 5x scale, move(-10.0f, 2.5f, -30.0f)
-  meshes["box"].get_transform().scale *= vec3(5.0);
+  meshes["box"].get_transform().scale *= vec3(5.0f, 5.0f, 5.0f);
   meshes["box"].get_transform().position = vec3(-10.0, 2.5f, -30.0f);
 
   // 4x scale, move(-30.0f, 10.0f, -10.0f)
-  meshes["tetrahedron"].get_transform().scale *= vec3(4.0);
+  meshes["tetrahedron"].get_transform().scale *= vec3(4.0f, 4.0f, 4.0f);
   meshes["tetrahedron"].get_transform().position = vec3(-30.0f, 10.0f, -10.0f);
 
   // 5x scale, move(-10.0f, 7.5f, -30.0f)
-  meshes["pyramid"].get_transform().scale *= vec3(5.0);
+  meshes["pyramid"].get_transform().scale *= vec3(5.0f, 5.0f, 5.0f);
   meshes["pyramid"].get_transform().position = vec3(-10.0f, 7.5f, -30.0f);
 
   // scale(3.0f, 1.0f, 3.0f), move(-10.0f, 11.5f, -30.0f), 180 rotate X axis
@@ -56,11 +56,11 @@ bool load_content() {
   meshes["disk"].get_transform().rotate(vec3(pi<float>()/2, 0.0f, 0.0f));
 
   // 5x scale, move(-25.0f, 2.5f, -25.0f)
-  meshes["cylinder"].get_transform().scale *= vec3(5);
+  meshes["cylinder"].get_transform().scale *= vec3(5.0f, 5.0f, 5.0f);
   meshes["cylinder"].get_transform().position = vec3(-25.0f, 2.5f, -25.0f);
 
   // 2.5x scale, move(-25.0f, 10.0f, -25.0f)
-  meshes["sphere"].get_transform().scale *= vec3(2.5);
+  meshes["sphere"].get_transform().scale *= vec3(2.5f, 2.5f, 2.5f);
   meshes["sphere"].get_transform().position = vec3(-25.0f, 10.0f, -25.0f);
 
   // 180 rotate X axis, move(-25.0f, 10.0f, -25.0f)
@@ -128,3 +128,6 @@ void main() {
   // Run application
   application.run();
 }
+
+
+
