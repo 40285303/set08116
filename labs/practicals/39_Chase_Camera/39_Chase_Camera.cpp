@@ -15,9 +15,9 @@ double cursor_y = 0.0;
 bool initialise() {
   // *********************************
   // Set input mode - hide the cursor
-
+	glfwSetInputMode(renderer::get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   // Capture initial mouse position
-
+	glfwGetCursorPos(renderer::get_window(), &cursor_x, &cursor_y);
   // *********************************
 
   return true;
@@ -88,39 +88,43 @@ bool update(float delta_time) {
   double current_y;
   // *********************************
   // Get the current cursor position
-
+  glfwGetCursorPos(renderer::get_window(), &current_x, &current_y);
   // Calculate delta of cursor positions from last frame
-
-
+  double delta_x = cursor_x - current_x;
+  double delta_y = cursor_y - current_y;
   // Multiply deltas by ratios and delta_time - gets actual change in orientation
-
-
+  delta_x = delta_x * ratio_width;
+  delta_y = delta_y * ratio_height;
   // Rotate cameras by delta
   // x - delta_y
   // y - delta_x
   // z - 0
-
+  cam.rotate(cam.get_target_rotation());
   // Use keyboard to rotate target_mesh - QE rotate on y-axis
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_Q)) {
+	  meshes["chaser"].get_transform().rotate(vec3(0.0f, 5.0f, 0.0f) * delta_time);
+  }
 
-
-
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_E)) {
+	  meshes["chaser"].get_transform().rotate(vec3(0.0f, -5.0f, 0.0f) * delta_time);
+  }
 
   // Use keyboard to move the target_mesh - WSAD
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_W)) {
+	 meshes["chaser"].get_transform().position = (vec3(0.0f, 5.0f, 0.0f) * delta_time);
+  }
 
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_S)) {
+	  meshes["chaser"].get_transform().position = (vec3(0.0f, -5.0f, 0.0f) * delta_time);
+  }
 
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_A)) {
+	  meshes["chaser"].get_transform().position = (vec3(5.0f, 0.0f, 0.0f) * delta_time);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
+  if (glfwGetKey(renderer::get_window(), GLFW_KEY_D)) {
+	  meshes["chaser"].get_transform().position = (vec3(-5.0f, 0.0f, 0.0f) * delta_time);
+  }
 
   // Move camera - update target position and rotation
 

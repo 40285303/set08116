@@ -11,8 +11,6 @@ texture tex;
 free_camera cam;
 double cursor_x = 0.0;
 double cursor_y = 0.0;
-double prev_x = 0.0;
-double prev_y = 0.0;
 
 bool initialise() {
   // *********************************
@@ -86,8 +84,8 @@ bool update(float delta_time) {
   glfwGetCursorPos(renderer::get_window(), &current_x, &current_y);
   
   // Calculate delta of cursor positions from last frame
-  double delta_x = current_x - prev_x;
-  double delta_y = current_y - prev_y;
+  double delta_x = current_x - cursor_x;
+  double delta_y = current_y - cursor_y;
   
   // Multiply deltas by ratios - gets actual change in orientation
   delta_x = delta_x * ratio_width;
@@ -97,34 +95,30 @@ bool update(float delta_time) {
   // delta_y - x-axis rotation
   // delta_x - y-axis rotation
   cam.rotate(delta_x, delta_y);
-  prev_x = current_x;
-  prev_y = current_y;
+  cursor_x = current_x;
+  cursor_y = current_y;
 
   // Use keyboard to move the camera - WSAD
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_W)) {
-	  cam.set_position(cam.get_position + (vec3(0.0f, 0.0f, 5.0f) * delta_time));
+	  cam.move(vec3(0.0f, 5.0f ,0.0f) * delta_time);
   }
-
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_S)) {
-	  cam.set_position(cam.get_position + (vec3(0.0f, 0.0f, -5.0f) * delta_time));
+	  cam.move(vec3(0.0f, -5.0, 0.0f) * delta_time);
   }
-
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_A)) {
-	  cam.set_position(cam.get_position + (vec3(5.0f, 0.0f, 0.0f) * delta_time));
+	  cam.move(vec3(-5.0f, 0.0f, 0.0f) * delta_time);
   }
-
-
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_D)) {
-	  cam.set_position(cam.get_position + (vec3(-5.0f, 0.0f, 0.0f) * delta_time));
+	  cam.move(vec3(5.0f, 0.0f, 0.0f) * delta_time);
   }
 
 
   // Move camera
-  cam.set_position();
+
   // Update the camera
   cam.update(delta_time);
   // Update cursor pos
-  glfwSetCursorPos(renderer::get_window() ,current_x + delta_x, current_y + delta_y);
+  glfwSetCursorPos(renderer::get_window() ,current_x, current_y);
 
   // *********************************
   return true;
