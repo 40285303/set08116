@@ -90,8 +90,8 @@ bool update(float delta_time) {
   // Get the current cursor position
   glfwGetCursorPos(renderer::get_window(), &current_x, &current_y);
   // Calculate delta of cursor positions from last frame
-  double delta_x = cursor_x - current_x;
-  double delta_y = cursor_y - current_y;
+  auto delta_x = current_x - cursor_x;
+  auto delta_y = current_y - cursor_y;
   // Multiply deltas by ratios and delta_time - gets actual change in orientation
   delta_x = delta_x * ratio_width;
   delta_y = delta_y * ratio_height;
@@ -99,40 +99,44 @@ bool update(float delta_time) {
   // x - delta_y
   // y - delta_x
   // z - 0
-  cam.rotate(cam.get_target_rotation());
+  cam.rotate(vec3(delta_y, delta_x ,0.0f));
   // Use keyboard to rotate target_mesh - QE rotate on y-axis
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_Q)) {
-	  meshes["chaser"].get_transform().rotate(vec3(0.0f, 5.0f, 0.0f) * delta_time);
+	  auto tRotation = vec3(0.0f, pi<float>(), 0.0f) * delta_time;
+	  target_mesh.get_transform().rotate(tRotation);
+	  cam.rotate(tRotation);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_E)) {
-	  meshes["chaser"].get_transform().rotate(vec3(0.0f, -5.0f, 0.0f) * delta_time);
+	  auto tRotation = vec3(0.0f, -pi<float>(), 0.0f) * delta_time;
+	  target_mesh.get_transform().rotate(tRotation);
+	  cam.rotate(tRotation);
   }
 
   // Use keyboard to move the target_mesh - WSAD
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_W)) {
-	 meshes["chaser"].get_transform().position = (vec3(0.0f, 5.0f, 0.0f) * delta_time);
+	 target_mesh.get_transform().position += (vec3(0.0f, 0.0f, 5.0f) * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_S)) {
-	  meshes["chaser"].get_transform().position = (vec3(0.0f, -5.0f, 0.0f) * delta_time);
+	  target_mesh.get_transform().position -= (vec3(0.0f, 0.0f, 5.0f) * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_A)) {
-	  meshes["chaser"].get_transform().position = (vec3(5.0f, 0.0f, 0.0f) * delta_time);
+	  target_mesh.get_transform().position += (vec3(5.0f, 0.0f, 0.0f) * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_D)) {
-	  meshes["chaser"].get_transform().position = (vec3(-5.0f, 0.0f, 0.0f) * delta_time);
+	  target_mesh.get_transform().position -= (vec3(5.0f, 0.0f, 0.0f) * delta_time);
   }
 
   // Move camera - update target position and rotation
-
+  cam.move(target_mesh.get_transform().position, vec3(0));
   // Update the camera
-
+  cam.update(delta_time);
   // Update cursor pos
-
-
+  cursor_x = current_x;
+  cursor_y = current_y;
   // *********************************
   return true;
 }
