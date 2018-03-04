@@ -42,7 +42,7 @@ bool load_content() {
   return true;
 }
 
-bool update(float delta_time) {
+bool updateA(float delta_time) {
   // Update the camera
   cam.update(delta_time);
   return true;

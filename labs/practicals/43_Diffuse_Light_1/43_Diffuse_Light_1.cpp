@@ -97,7 +97,7 @@ bool render() {
     // Set light direction - (1.0, 1.0, -1.0)
 
     // Render mesh
-
+	renderer::render(m);
     // *********************************
   }
 

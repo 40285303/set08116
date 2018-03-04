@@ -124,6 +124,7 @@ bool update(float delta_time) {
   return true;
 }
 
+
 bool render() {
   // Render meshes
   for (auto &e : meshes) {

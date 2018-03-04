@@ -1,3 +1,221 @@
+
+#include <glm\glm.hpp>
+#include <graphics_framework.h>
+
+using namespace std;
+using namespace graphics_framework;
+using namespace glm;
+
+geometry geom;
+effect eff;
+target_camera cam;
+free_camera cam2;
+target_camera cam3;
+texture testTex;
+map<string, mesh> meshes;
+double cursor_x = 0.0f;
+double cursor_y = 0.0f;
+int cameraNum = 1;
+
+bool initialise() {
+	glfwSetInputMode(renderer::get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// get initial cursor positions
+	glfwGetCursorPos(renderer::get_window(), &cursor_x, &cursor_y);
+
+	return true;
+}
+
+
+
+bool load_content() {
+	meshes["pyramid"] = mesh(geometry_builder::create_pyramid());
+	meshes["box"] = mesh(geometry_builder::create_box());
+	meshes["sphere"] = mesh(geometry_builder::create_sphere(unsigned int(20), unsigned int(20)));
+
+	meshes["pyramid"].get_transform().position = vec3(2.0f, 1.0f, -4.0f);
+	meshes["pyramid"].get_transform().scale *= vec3(3.0f, 3.0f, 3.0f);
+	meshes["box"].get_transform().position = vec3(0.0f, 1.0f, 5.0f);
+	meshes["box"].get_transform().rotate(vec3(0.0f, pi<float>()/4, 0.0f));
+	meshes["sphere"].get_transform().position = vec3(0.0f, 1.0f, 0.0f);
+	
+
+	testTex = texture("C:/Users/Reggie & Ronnie/Documents/GitHub/coursework/labs/coursework/res/textures/check_1.png");
+
+	// Load in shaders
+	eff.add_shader("shaders/basic.vert", GL_VERTEX_SHADER);
+	eff.add_shader("shaders/basic.frag", GL_FRAGMENT_SHADER);
+
+	// Build effect
+	eff.build();
+
+	// Set camera properties
+	cam.set_position(vec3(10.0f, 10.0f, 15.0f));
+	cam.set_target(vec3(0.0f, 0.0f, 0.0f));
+	cam.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
+
+	cam2.set_position(vec3(-10.0f, 4.0f, 12.0));
+	cam2.set_target(vec3(0.0f, 0.0f, 0.0f));
+	cam2.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
+
+	cam3.set_position(vec3(10.0f, 8.0f, 15.0));
+	cam3.set_target(vec3(0.0f, 0.0f, 0.0f));
+	cam3.set_projection(quarter_pi<float>(), renderer::get_screen_aspect(), 0.1f, 1000.0f);
+	return true;
+}
+
+
+
+bool update(float delta_time) {
+
+	// Update the camera
+	if (cameraNum == 1) {
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_2)) {
+			cameraNum = 2;
+			cam2.update(delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_3)) {
+			cameraNum = 3;
+			cam3.update(delta_time);
+		}
+
+		cam.update(delta_time);
+		return true;
+	}
+
+	else if (cameraNum == 3) {
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_1)) {
+			cameraNum = 1;
+			cam.update(delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_2)) {
+			cameraNum = 2;
+			cam2.update(delta_time);
+		}
+
+		cam3.update(delta_time);
+		return true;
+	}
+
+	else if (cameraNum == 2) {
+		static double ratio_width = quarter_pi<float>() / static_cast<float>(renderer::get_screen_width());
+		static double ratio_height =
+			(quarter_pi<float>() *
+			(static_cast<float>(renderer::get_screen_height()) / static_cast<float>(renderer::get_screen_width()))) /
+			static_cast<float>(renderer::get_screen_height());
+
+		double current_x;
+		double current_y;
+
+		//gets current cursor position
+		glfwGetCursorPos(renderer::get_window(), &current_x, &current_y);
+
+		double delta_x = current_x - cursor_x;
+		double delta_y = current_y - cursor_y;
+
+		delta_x = delta_x * ratio_width;
+		delta_y = delta_y * ratio_height;
+
+		cam2.rotate(delta_x, delta_y);
+		cursor_x = current_x;
+		cursor_y = current_y;
+
+
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_W)) {
+			cam2.move(vec3(0.0f, 5.0f, 0.0f) * delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_S)) {
+			cam2.move(vec3(0.0f, -5.0, 0.0f) * delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_A)) {
+			cam2.move(vec3(-5.0f, 0.0f, 0.0f) * delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_D)) {
+			cam2.move(vec3(5.0f, 0.0f, 0.0f) * delta_time);
+		}
+
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_1)) {
+			cameraNum = 1;
+			cam.update(delta_time);
+		}
+		if (glfwGetKey(renderer::get_window(), GLFW_KEY_3)) {
+			cameraNum = 3;
+			cam3.update(delta_time);
+		}
+
+		cam2.update(delta_time);
+
+		glfwSetCursorPos(renderer::get_window(), current_x, current_y);
+
+		return true;
+	}
+
+}
+
+
+
+bool render() {
+	for (auto &e : meshes) {
+		auto m = e.second;
+		// Bind effect
+		renderer::bind(eff);
+		// Create MVP matrix
+		auto M = m.get_transform().get_transform_matrix();
+		if (cameraNum == 1) {
+			auto V = cam.get_view();
+			auto P = cam.get_projection();
+			auto MVP = P * V * M;
+
+			// Set MVP matrix uniform
+			glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
+		}
+		else if (cameraNum == 2) {
+			auto V = cam2.get_view();
+			auto P = cam2.get_projection();
+			auto MVP = P * V * M;
+
+			// Set MVP matrix uniform
+			glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
+		}
+		else if (cameraNum == 3) {
+			auto V = cam3.get_view();
+			auto P = cam3.get_projection();
+			auto MVP = P * V * M;
+
+			// Set MVP matrix uniform
+			glUniformMatrix4fv(eff.get_uniform_location("MVP"), 1, GL_FALSE, value_ptr(MVP));
+		}
+
+		renderer::bind(testTex, 0);
+
+		glUniform1i(eff.get_uniform_location("testTex"),0);
+
+		// Render geometry
+		renderer::render(m);		
+	}
+	return true;
+}
+
+
+
+void main() {
+	// Create application
+	app application("Graphics Coursework");
+	// Set load content, update and render methods
+	application.set_load_content(load_content);
+	application.set_update(update);
+	application.set_render(render);
+	// Run application
+	application.run();
+}
+
+
+
+
+
+
+
+
+/*
 #include <glm/glm.hpp>
 #include <graphics_framework.h>
 
@@ -285,3 +503,4 @@ void main() {
   // Run application
   application.run();
 }
+*/

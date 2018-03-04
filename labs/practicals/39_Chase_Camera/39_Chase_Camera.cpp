@@ -114,20 +114,21 @@ bool update(float delta_time) {
   }
 
   // Use keyboard to move the target_mesh - WSAD
+  auto cam_forward = target_mesh.get_transform().position - cam.get_position();
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_W)) {
-	 target_mesh.get_transform().position += (vec3(0.0f, 0.0f, 5.0f) * delta_time);
+	  target_mesh.get_transform().translate(normalize(cam_forward * vec3(1, 0, 1)) * 5.0f * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_S)) {
-	  target_mesh.get_transform().position -= (vec3(0.0f, 0.0f, 5.0f) * delta_time);
+	  target_mesh.get_transform().translate(normalize(-cam_forward * vec3(1, 0, 1)) * 5.0f * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_A)) {
-	  target_mesh.get_transform().position += (vec3(5.0f, 0.0f, 0.0f) * delta_time);
+	  target_mesh.get_transform().translate(normalize(cross(-cam_forward, cam.get_up()) * vec3(1, 0, 1)) * 5.f * delta_time);
   }
 
   if (glfwGetKey(renderer::get_window(), GLFW_KEY_D)) {
-	  target_mesh.get_transform().position -= (vec3(5.0f, 0.0f, 0.0f) * delta_time);
+	  target_mesh.get_transform().translate(normalize(cross(cam_forward, cam.get_up()) * vec3(1, 0, 1)) * 5.f * delta_time);
   }
 
   // Move camera - update target position and rotation
