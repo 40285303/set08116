@@ -39,11 +39,11 @@ bool load_content() {
 	meshes["sphere"].get_transform().position = vec3(0.0f, 1.0f, 0.0f);
 	
 
-	testTex = texture("C:/Users/Reggie & Ronnie/Documents/GitHub/coursework/labs/coursework/res/textures/check_1.png");
+	testTex = texture("C:/Users/40285303/Documents/GitHub/set08116/labs/res/textures/grass.jpg");
 
 	// Load in shaders
-	eff.add_shader("shaders/basic.vert", GL_VERTEX_SHADER);
-	eff.add_shader("shaders/basic.frag", GL_FRAGMENT_SHADER);
+	eff.add_shader("C:/Users/40285303/Documents/GitHub/set08116/labs/practicals/60_Terrain/simple_texture.vert", GL_VERTEX_SHADER);
+	eff.add_shader("C:/Users/40285303/Documents/GitHub/set08116/labs/practicals/60_Terrain/simple_texture.frag", GL_FRAGMENT_SHADER);
 
 	// Build effect
 	eff.build();

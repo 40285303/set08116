@@ -9,6 +9,7 @@ layout(location = 0) out vec4 colour;
 void main() {
   // *********************************
   // Set outgoing vertex colour
+  //colour = vec4(1.0f);
   colour = vertex_colour;
   // *********************************
 }

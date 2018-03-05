@@ -91,11 +91,11 @@ bool render() {
 
     // *********************************
     // Set material colour- all objects red
-
+	glUniform4fv(eff.get_uniform_location("material_colour"), 0, value_ptr(vec4(0.765f, 0.082f, 0.196f, 1.0f)));
     // Set light colour- (1.0, 1.0, 1.0, 1.0)
-
+	glUniform4fv(eff.get_uniform_location("light_colour"), 1, value_ptr(vec4(1.0f, 1.0f, 1.0f, 1.0f)));
     // Set light direction - (1.0, 1.0, -1.0)
-
+	glUniform4fv(eff.get_uniform_location("light_dir"), 1, value_ptr(vec3(1.0f, 1.0f, -1.0f)));
     // Render mesh
 	renderer::render(m);
     // *********************************
